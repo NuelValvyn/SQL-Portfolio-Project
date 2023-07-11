@@ -1,0 +1,94 @@
+select * from `Portfolio_Project.CovidDeaths`
+where continent is not null
+order by 3,4;
+
+select * from `Portfolio_Project.CovidVaccination`
+where continent is not null
+order by 3,4;
+
+-- Selecting Data I will be using
+
+
+select location, date, total_cases, new_cases, total_deaths, population
+from `Portfolio_Project.CovidDeaths`
+order by 1,2;
+
+-- looking at the total cases vs the total deaths
+-- shows the likelihood of dying if you contract covid in the US
+
+select location, date, total_cases, total_deaths, (total_deaths/total_cases)*100 AS deathpercentage
+from `Portfolio_Project.CovidDeaths`
+where location like '%United States%' AND continent is not null
+order by 1,2;
+
+
+-- looking at the total cases vs the population
+-- SHows what percentage of population has got covid in the US
+
+select location, date, total_cases, population, (total_cases/population)*100 AS populationpercent
+from `Portfolio_Project.CovidDeaths`
+where location like '%United States%' AND continent is not null
+order by 1,2 ASC;
+
+
+-- looking at countries with highest infection rate compared to the actual population
+
+select location, population, MAX(total_cases) AS HighestInfectionRate, MAX((total_cases/population))*100 AS PercentPopulationRate
+from `Portfolio_Project.CovidDeaths`
+where continent is not null
+group by 1,2
+order by PercentPopulationRate DESC;
+
+-- Showing Countries with the highest Death count per population
+
+select location, population, MAX(total_deaths) AS HighestDeath, MAX((total_deaths/population))*100 AS PercentDeathRate
+from `Portfolio_Project.CovidDeaths`
+where continent is not null
+group by 1,2
+order by PercentDeathRate DESC;
+
+-- showing Countries with highest death without the population and percentage death rate
+
+select location, MAX(total_deaths) AS HighestDeath
+from `Portfolio_Project.CovidDeaths`
+where continent is not null
+group by 1
+order by HighestDeath DESC;
+
+
+-- showing continents with highest death rate
+
+
+select continent, MAX(total_deaths) AS HighestDeathRate
+from `Portfolio_Project.CovidDeaths`
+where continent is not null
+group by continent
+order by HighestDeathRate;
+
+
+-- showing continents with the highest death rate  per population
+
+select continent, MAX(total_deaths) AS HighestDeathRate
+from `Portfolio_Project.CovidDeaths`
+where continent is not null
+group by 1
+order by HighestDeathRate DESC;
+
+
+-- GLOBAL updates/numbers on the Pandemic
+
+
+select date, SUM(new_cases)
+from `Portfolio_Project.CovidDeaths`
+where continent is not null
+group by date
+order by 1,2 DESC;
+
+
+-- GLOBAL percentage
+
+
+select SUM(new_cases) AS total_cases, SUM(CAST(new_deaths as int)) AS total_deaths, SUM(CAST(new_deaths as int))/SUM(New_cases)*100 AS DeathPercent
+from `Portfolio_Project.CovidDeaths`
+where continent is not null
+order by 1,2;
