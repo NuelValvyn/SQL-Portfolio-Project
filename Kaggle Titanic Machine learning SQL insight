@@ -1,0 +1,112 @@
+select * from `Titanic.test_data`;
+
+select * from `Titanic.train_data`;
+
+-- seperating the 0(dead) from the 1(alive): for death
+
+select Passengerid, Survived, Pclass,Name, Sex, Age
+from `Titanic.train_data`
+where Survived = 0;
+
+-- seperating the 0(dead) from the 1(alive): for survived
+
+select Passengerid, Survived, Pclass,Name, Sex, Age
+from `Titanic.train_data`
+where Survived = 1;
+
+-- percentage of surivived Individuals
+
+SELECT (COUNT(CASE WHEN survived = 1 THEN 1 END) / COUNT(*)) * 100 AS survival_percentage
+FROM `Titanic.train_data`;
+
+-- percentage of dead Individuals
+
+SELECT (COUNT(CASE WHEN survived = 0 THEN 0 END) / COUNT(*)) * 100 AS survival_percentage
+FROM `Titanic.train_data`;
+
+-- the numbers of survived individuals
+
+SELECT COUNT(CASE WHEN survived = 1 THEN 1 END) AS survived_count
+FROM `Titanic.train_data`
+WHERE survived = 1;
+
+-- the numbers of Dead individuals
+
+SELECT COUNT(CASE WHEN survived = 0 THEN 0 END) AS survived_count
+FROM `Titanic.train_data`
+WHERE survived = 0;
+
+-- list of males that didn't survive
+
+select Pclass, Age, sex, Survived
+from `Titanic.train_data`
+where survived = 0 AND sex = 'male' AND Age is not null;
+
+-- percentage list of males who didn't survive
+
+SELECT (COUNT(*) * 100.0 / (
+    SELECT COUNT(*)
+    FROM `Titanic.train_data`
+    WHERE Survived = 0
+  )) AS male_death_percentage
+FROM `Titanic.train_data`
+WHERE Survived = 0
+  AND sex = 'male';
+
+
+-- percentage of male survivors
+
+SELECT (COUNT(*) * 100.0 / (
+    SELECT COUNT(*)
+    FROM `Titanic.train_data`
+    WHERE Survived = 1
+  )) AS male_survivors_percentage
+FROM `Titanic.train_data`
+WHERE Survived = 1
+  AND sex = 'male';
+
+  -- percent of females who died
+
+  SELECT (COUNT(*) * 100.0 / (
+    SELECT COUNT(*)
+    FROM `Titanic.train_data`
+    WHERE Survived = 0
+  )) AS female_survivors_percentage
+FROM `Titanic.train_data`
+WHERE Survived = 0
+  AND sex = 'female';
+
+  -- percent of females who survived
+
+  SELECT (COUNT(*) * 100.0 / (
+    SELECT COUNT(*)
+    FROM `Titanic.train_data`
+    WHERE Survived = 1
+  )) AS female_survivors_percentage
+FROM `Titanic.train_data`
+WHERE Survived = 1
+  AND sex = 'female';
+
+-- Average age of men who died
+
+SELECT AVG(age) AS average_age_of_men_who_died
+FROM `Titanic.train_data`
+WHERE sex = 'male' AND survived = 0;
+
+-- Average age of women who died
+
+SELECT AVG(age) AS average_age_of_women_who_died
+FROM `Titanic.train_data`
+WHERE sex = 'female' AND survived = 0;
+
+-- Average age of men that survived
+
+SELECT AVG(age) AS average_age_of_men_who_survived
+FROM `Titanic.train_data`
+WHERE sex = 'male' AND survived = 1;
+
+-- Average age of women that survived
+
+SELECT AVG(age) AS average_age_of_women_who_survived
+FROM `Titanic.train_data`
+WHERE sex = 'female' AND survived = 1;
