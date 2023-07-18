@@ -110,3 +110,13 @@ WHERE sex = 'male' AND survived = 1;
 SELECT AVG(age) AS average_age_of_women_who_survived
 FROM `Titanic.train_data`
 WHERE sex = 'female' AND survived = 1;
+
+-- percentage of general survivors
+
+SELECT (COUNT(CASE WHEN survived = 1 THEN 1 END) * 100.0) / COUNT(*) AS survival_percentage
+FROM `Titanic.train_data`;
+
+-- percentage of general deaths
+
+SELECT (COUNT(CASE WHEN survived = 0 THEN 0 END) * 100.0) / COUNT(*) AS survival_percentage
+FROM `Titanic.train_data`;
