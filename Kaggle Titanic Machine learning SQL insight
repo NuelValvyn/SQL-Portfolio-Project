@@ -118,5 +118,5 @@ FROM `Titanic.train_data`;
 
 -- percentage of general deaths
 
-SELECT (COUNT(CASE WHEN survived = 0 THEN 0 END) * 100.0) / COUNT(*) AS survival_percentage
+SELECT (COUNT(CASE WHEN survived = 0 THEN 0 END) * 100.0) / COUNT(*) AS death_percentage
 FROM `Titanic.train_data`;
